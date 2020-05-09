@@ -1,0 +1,13 @@
+
+button>span{
+  padding: 4px;
+}
+
+button > span:hover{
+  color:blue;
+  text-decoration: underline;
+}
+
+button{
+  height:100%;
+}
