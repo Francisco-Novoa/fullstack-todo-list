@@ -106,8 +106,6 @@ function App() {
           {!nuevaLista ?
             <button className="btn btn-block btn-primary" onClick={() => { setNuevaLista(!nuevaLista); setAlert(true) }}>
               <span>Nueva Lista </span>
-              <i className="fas fa-plus mr-2"></i>
-              <span className="bolder">1</span>
             </button>
             :
             <>
@@ -135,14 +133,10 @@ function App() {
           {store.currentList !== null?
             <button className="btn btn-block btn-danger" data-toggle="modal" data-target="#borrarTareas">
             <span>Borrar Lista Actual </span>
-            <i className="fas fa-minus mr-2"></i>
-            <span className="bolder">1</span>
           </button>
           :
           <button className="btn btn-block btn-danger disabled">
             <span>Borrar Lista Actual </span>
-            <i className="fas fa-minus mr-2"></i>
-            <span className="bolder">1</span>
           </button>
           }
         </div>
