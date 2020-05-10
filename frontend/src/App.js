@@ -58,8 +58,8 @@ function App() {
 
   return (
     <div className="wrapper container-fluid">
-      <div className="row d-flex justify-content-center" > {/* Titulo */}
-        <div className="col-4 "><h1 className="text-primary bolder underscore" >Listas de Tareas</h1> </div>
+      <div className="row " > {/* Titulo */}
+        <div className="col-12 d-flex justify-content-center"><h1 className="text-primary bolder underscore" >Listas de Tareas</h1> </div>
       </div>
       <div className="row mb-2" style={{ height: "50px" }}> {/* Alertas y Mensajes */}
         <div className="col-4">
