@@ -3,6 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
+ // Add css files
+ import 'bootstrap/dist/css/bootstrap.min.css';
+
+ import '@fortawesome/fontawesome-free/css/all.css'; // 5.x
+
+
+ // Add js files
+ import 'jquery';
+ import 'popper.js';
+ import 'bootstrap';
 
 ReactDOM.render(
   <React.StrictMode>

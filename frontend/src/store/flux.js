@@ -3,17 +3,16 @@ export default function getState({ getStore, getActions, setStore }) {
     return {
         store: {
             all: null,
-            current: null,
-            nombres: null,
-            inputNombre:null,
-            inputNewTask:null
+            name:null,
+            current:null,
+            currentList:null,
         },
         actions: {
-            getAll: async url => {
+            GET: async url => {
                 try {
                     const all = await fetch(url, {
                         method: "GET",
-                        headers: { "Content-Type": "aplication/json" }
+                        headers: { "Content-Type": "application/json" }
                     })
                     const data = await all.json()
                     setStore({
@@ -24,130 +23,136 @@ export default function getState({ getStore, getActions, setStore }) {
                     console.log(error)
                 }
             },
-            getCurrent: async (url, name) => {
+            GETNAME: async url => {
                 try {
-                    const all = await fetch(url + name, {
+                    const all = await fetch(url, {
                         method: "GET",
-                        headers: { "Content-Type": "aplication/json" }
+                        headers: { "Content-Type": "application/json" }
                     })
                     const data = await all.json()
-                    if (data.tareas!==""){
-                    data.tareas = JSON.parse(data.tareas)
-                    }
-                    setStore({ current: data })
+                    setStore({
+                        name: data
+                    })
                 }
                 catch (error) {
                     console.log(error)
                 }
             },
-            getNames: async (url) => {
+            GETCURRLIST: async url => {
                 try {
-                    const names = await fetch(url, {
+                    const all = await fetch(url, {
                         method: "GET",
-                        headers: { "Content-Type": "aplication/json" }
+                        headers: { "Content-Type": "application/json" }
                     })
-                    const data = await names.json()
-                    setStore({ nombres: data })
+                    const data = await all.json()
+                    setStore({
+                        currentList: data
+                    })
                 }
                 catch (error) {
                     console.log(error)
                 }
             },
-            saveTodos: async (url, name, body)=>{
-                try{
-                    const change = await fetch(url+name,{
-                        method:"PUT",
+            PUTCURRLIST:async url => {
+                try {
+                    const all = await fetch(url, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" }
+                    })
+                    const data = await all.json()
+                    setStore({
+                        currentList: data
+                    })
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            },
+            MODIFYCURRLIST:async (url,body) => {
+                try {
+                    const all = await fetch(url, {
+                        method: "PUT",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(body)
+                        body:JSON.stringify(body)
                     })
-                    const result= await change.json()
-                    console.log(result)
+                    const data = await all.json()
+                    setStore({
+                        currentList: data
+                    })
                 }
-                catch (error){
+                catch (error) {
                     console.log(error)
                 }
             },
-            deleteTodos: async(url, name, reload)=>{
-                try{
-                    const message = await fetch (url+name,{
+            DELETE: async url => {
+                try {
+                    const all = await fetch(url, {
                         method: "DELETE",
-                        headers:{"Content-Type":"application/json"}
+                        headers: { "Content-Type": "application/json" }
                     })
-                    const responce =await message.json()
-                    if (responce.msg==="ok"){
-                        let aux= [...reload]
-                    let index = aux.findIndex((element) => element == name)
-                    aux.splice(index,index+1)
-                    setStore({nombres:aux})
-                    setStore({current:null})
-                    console.log(responce)
-                    }
-                    
-                    
+                    const data = await all.json()
+                    setStore({
+                        all: data,
+                        current:null,
+                        currentList:null
+                    })
+                    let actions=getActions()
+                    actions.GETNAME("http://localhost:5000/api/todos/names")
                 }
-                catch (error){
+                catch (error) {
                     console.log(error)
                 }
             },
-            newList: async(url,name,nombres)=>{
-                try{
-                    const message = await fetch (url+name,{
-                        method: "POST",
-                        headers:{"Content-Type":"application/json"}
+            DELETECURRLIST:async url => {
+                try {
+                    const all = await fetch(url, {
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" }
                     })
-                    const responce =await message.json()
-                    if (responce.result==="ok"){
-                        try {
-                            const all = await fetch("http://localhost:5000/api/todos/" + name, {
-                                method: "GET",
-                                headers: { "Content-Type": "aplication/json" }
-                            })
-                            const data = await all.json()
-                            if (data.tareas!==""){
-                            data.tareas = JSON.parse(data.tareas)
-                            }
-                            setStore({ current: data })
-                        }
-                        catch (error) {
-                            console.log(error)
-                        }
-                        let aux= [...nombres]
-                        aux.push(name)
-                        console.log(name)
-                        setStore({nombres:aux})
-                    } 
+                    const data = await all.json()
+                    setStore({
+                        currentList: data
+                    })
                 }
-                catch (error){
+                catch (error) {
                     console.log(error)
                 }
             },
-            checkTodos: (number, store) => {
-                let newcurr = { ...store.current }
-                newcurr.tareas[number].done=!store.current.tareas[number].done;
-                setStore({ current: newcurr })
-            },
-            handleTrashCan: (number, store) =>{
-                let newcurr = {...store.current}
-                newcurr.tareas.splice(number,number+1)
-                setStore({current:newcurr})
-            },
-            handleNewTask:(texto,store)=>{
-                let newcurr = {...store}
-                if (newcurr.tareas===""){
-                    newcurr.tareas=[{done:false,label:texto}]
+            POST: async (url,nombre) =>{
+                try {
+                    const all = await fetch(url,{
+                        method:"POST",
+                        headers:{"Content-Type":"application/json"},
+                    })
+                    const data = await all.json()
+                    setStore({
+                        ALL: data,
+                        current:nombre
+                    })
+                    let actions=getActions()
+                    actions.GETNAME("http://localhost:5000/api/todos/names")
+                } catch (error) {
+                    console.log(error)
                 }
-                else{
-                    newcurr.tareas.push({done:false,label:texto})
+            },
+            POSTNEWTASK: async (url,body) =>{
+                try {
+                    const all = await fetch(url,{
+                        method:"POST",
+                        headers:{"Content-Type":"application/json"},
+                        body:JSON.stringify(body)
+                    })
+                    const data = await all.json()
+                    setStore({
+                        currentList: data
+                    })
+                } catch (error) {
+                    console.log(error)
                 }
-                setStore({current:newcurr})
             },
-            handleInputNombre:(input)=>{
-                setStore({inputNombre:input})
+            setCurrent:(input)=>{
+               setStore({current:input})
             },
-            handleInputNewTask:(input)=>{
-                setStore({inputNewTask:input})
-            },
-
         }
     }
 }

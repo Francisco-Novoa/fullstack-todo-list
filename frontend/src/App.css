@@ -1,13 +1,16 @@
-
-button>span{
-  padding: 4px;
+.right{
+  float: right;
 }
 
-button > span:hover{
-  color:blue;
+
+.check{
+  float: right;
+}
+
+.underscore{
   text-decoration: underline;
 }
 
-button{
-  height:100%;
+.bolder{
+  font-weight: bold;
 }
